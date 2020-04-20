@@ -23,19 +23,34 @@ window.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    function setTimer() {
+
+
+    function setTimer(time) {
         const timerHours = document.querySelector("#timer-hours"),
             timerMinute = document.querySelector("#timer-minutes"),
             timerSecond = document.querySelector("#timer-seconds");
-        const timer = getTimer("22 april 2020");
+        const timer = getTimer(time);
         timerHours.textContent = addZero(timer.hour);
         timerMinute.textContent = addZero(timer.minute);
         timerSecond.textContent = addZero(timer.second);
-        if (timer.timeMiliSecond < 0) clearInterval(idTimer);
+
+        const negativeDay = new Date();
+        negativeDay.setHours(23, 59, 59);
+        
+        
+
+        if (timer.timeMiliSecond < 0) {
+            time = negativeDay;
+        }
+
+        const idTimer = setTimeout(setTimer, 1000, time);
+       
 
     }
 
-    const idTimer = setInterval(setTimer, 1000);
+    setTimer("12 april 2020");
+
+    // const idTimer = setInterval(setTimer, 1000, "12 april 2020");
 
 
 
