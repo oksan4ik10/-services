@@ -46,13 +46,48 @@ window.addEventListener("DOMContentLoaded", () => {
         const menu = document.querySelector("menu"),
             btnMenu = document.querySelector(".menu"),
             closeBtn = document.querySelector(".close-btn"),
-            menuItems = document.querySelectorAll("ul>li");
+            menuItems = document.querySelectorAll("ul>li a[href*='#']");
+
 
         const handlerMenu = () =>  menu.classList.toggle("active-menu");
 
         btnMenu.addEventListener("click", handlerMenu);
         closeBtn.addEventListener("click", handlerMenu);
         menuItems.forEach(el => el.addEventListener("click", handlerMenu));
+
+        //плавный переход
+        // const=menuItems[0].getAttribute();
+
+
+        function animateMenu(testItem) {
+            let idAnimateMenu, count = 0;
+            const testId = testItem.getAttribute("href"),
+                top = document.querySelector(`${testId}`);
+            function startAnimateMenu() {
+                idAnimateMenu = requestAnimationFrame(startAnimateMenu);
+                count++;
+                const newCount = count * 20;
+                if (newCount >= top.offsetTop) cancelAnimationFrame(idAnimateMenu);
+                window.scrollTo(0, newCount);
+
+            }
+            idAnimateMenu = requestAnimationFrame(startAnimateMenu);
+        }
+
+        menuItems.forEach(el => {
+            el.addEventListener("click", event => {
+                event.preventDefault();
+                animateMenu(el);
+
+            });
+
+        });
+
+
+
+
+
+
     };
 
     callMenu();
@@ -82,11 +117,10 @@ window.addEventListener("DOMContentLoaded", () => {
             function animatePop() {
                 idAnimatePop = requestAnimationFrame(animatePop);
                 count++;
-                let newCount= (count * 0.2);
+                const newCount = (count * 0.2);
                 popupContent.style.left = newCount + "%";
                 if (newCount === 38) cancelAnimationFrame(idAnimatePop);
             }
-
             idAnimatePop = requestAnimationFrame(animatePop);
 
 
