@@ -17,6 +17,7 @@
 <body>
 
     <button>Погнали</button>
+    <button id="reset">Сброс</button>
     
 
 
@@ -54,6 +55,18 @@
             document.body.append(square1);
             square1.style.left="0px";
 
+            //сброс анимации
+            document.querySelector("#reset").addEventListener("click",()=>{
+                square1.style.left="0px";
+                stop = true;
+                cancelAnimationFrame(animeteId);
+                count=0;
+
+
+            })
+
+            
+            //анимация
             let animeteId, left, newLeft, count=0, check=true;
             function Animate(){
                     animeteId=requestAnimationFrame(Animate);
