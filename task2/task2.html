@@ -4,57 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Day18</title>
+    <title>Day18Hard Animation</title>
 </head>
+<style>
+    button{
+        width: 100px;
+        height: 50px;
+        margin: 0px auto;
+        display: block;
+    }
+</style>
 <body>
+
+    <button>Погнали</button>
     
 
 
     <script>
-        const dayName= (day) =>{
-            let c=+day%10;
-            if ((day>20||day<10)&&c==1) {strClock= "день"}
-            else if ((day>20||day<10)&&(c==2||c==3||c==4))strClock= "дня"
-            else strClock="дней";
+        'use strict';
+
+            let DomElement=function(selector,height,width,bg,fontSize){
+                this.selector=selector; 
+                this.height=height; 
+                this.width= width; 
+                this.bg=bg; 
+                this.fontSize=fontSize;
             
-            return day + " "+strClock;
-        }
-        const TimesOfDay=(time) => {
-            let timeDay, dayWeek, timeNow, newYear,
-            timeHours=time.getHours();
+            }
 
-            if ((timeHours>5)&&(timeHours<11)) timeDay = "Доброе утро"
-            else if ((timeHours>=11) && (timeHours<17)) timeDay="Добрый день"
-            else if ((timeHours>=17)&&(timeHours<23)) timeDay="Добрый вечер"
-            else timeDay="Доброй ночи"
-
-            const dayWeekNow=time.toLocaleString("ru", {weekday:"long"});
-            dayWeek=dayWeekNow.toUpperCase()[0]+dayWeekNow.slice(1);
-
-            timeNow=time.toLocaleTimeString("en");
-
-            const happyNewYear = new Date("1 1 2021");
-            newYear=dayName(Math.ceil((happyNewYear-time)/1000/60/60/24));
-            
-
-            return {timeDay, dayWeek, timeNow, newYear}
-        }
-
-        
-        let date=TimesOfDay(new Date());
-
-        
-
-        document.body.innerHTML=`${date.timeDay}<br>
-                                Сегодня: ${date.dayWeek}<br>
-                                Текущее время:${date.timeNow}<br>
-                                До нового года осталось ${date.newYear}`
+            DomElement.prototype.createElem=function(text){
+                let newEl,
+                styles=`height:${this.height};
+                        width:${this.width};
+                        background-color:${this.bg};
+                        font-size:${this.fontSize};
+                        position:absolute`;
+                if (this.selector[0]===".") newEl=document.createElement("div");
+                else if (this.selector[0]==="#") newEl=document.createElement("p");
+                newEl.classList.add(this.selector);
+                newEl.style.cssText=styles;
+                newEl.textContent=text;
+                return newEl;
+            }
 
 
-        
-    
-        
-    
+            let elem1=new DomElement(".block","100px","100px","red","14px");
+
+            let square1=elem1.createElem("HI")
+            document.body.append(square1);
+            square1.style.left="0px";
+
+            let animeteId, left, newLeft, count=0, check=true;
+            function Animate(){
+                    animeteId=requestAnimationFrame(Animate);
+                    
+                    newLeft=count;
+                    left = square1.getBoundingClientRect().x;
+                    if(left+100>= document.documentElement.clientWidth) check=false
+                    if (left===0) check=true;
+                    check ? count++ : count--;
+                    square1.style.left=newLeft+"px";  
+                    
+            }
+
+          let stop = true;
+            const button=document.querySelector("button");
+            button.addEventListener("click",()=>{
+                if (stop) {
+                    animeteId=requestAnimationFrame(Animate);
+                    stop=false;
+                } else{
+                    stop=true;
+                    cancelAnimationFrame(animeteId)
+                }
+                
+
+            })
+   
     </script>
 
 </body>
