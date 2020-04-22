@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
             const timerHours = document.querySelector("#timer-hours"),
                 timerMinute = document.querySelector("#timer-minutes"),
                 timerSecond = document.querySelector("#timer-seconds");
-            const timer = getTimer("22 april 2020");
+            const timer = getTimer("5 may 2020");
             timerHours.textContent = addZero(timer.hour);
             timerMinute.textContent = addZero(timer.minute);
             timerSecond.textContent = addZero(timer.second);
@@ -46,8 +46,8 @@ window.addEventListener("DOMContentLoaded", () => {
         const menu = document.querySelector("menu"),
             btnMenu = document.querySelector(".menu"),
             closeBtn = document.querySelector(".close-btn"),
-            menuItems = document.querySelectorAll("ul>li a[href*='#']");
-
+            menuItems = document.querySelectorAll("ul>li>a[href*='#']"),
+            imgScroll = document.querySelector(" a[href='#service-block']"); //скролл в шапке
 
         const handlerMenu = () =>  menu.classList.toggle("active-menu");
 
@@ -56,9 +56,6 @@ window.addEventListener("DOMContentLoaded", () => {
         menuItems.forEach(el => el.addEventListener("click", handlerMenu));
 
         //плавный переход
-        // const=menuItems[0].getAttribute();
-
-
         function animateMenu(testItem) {
             let idAnimateMenu, count = 0;
             const testId = testItem.getAttribute("href"),
@@ -78,15 +75,21 @@ window.addEventListener("DOMContentLoaded", () => {
             el.addEventListener("click", event => {
                 event.preventDefault();
                 animateMenu(el);
-
             });
-
         });
+        let imgTranslate = true;
+        imgScroll.addEventListener("click", event => {
+            event.preventDefault();
+            if (imgTranslate) {
+                imgScroll.style.transform = "rotate(180deg)";
+                imgTranslate = false;
+            } else {
+                imgTranslate = true;
+                imgScroll.style.transform = "rotate(0deg)";
+            }
 
-
-
-
-
+            animateMenu(imgScroll);
+        });
 
     };
 
@@ -112,20 +115,29 @@ window.addEventListener("DOMContentLoaded", () => {
         //анимация для модульного окна
             const popupContent = document.querySelector(".popup-content");
             let idAnimatePop;
-            popupContent.style.left = "0%";
             let count = 0;
             function animatePop() {
                 idAnimatePop = requestAnimationFrame(animatePop);
                 count++;
-                const newCount = (count * 0.2);
+                const newCount = (count * 0.8);
                 popupContent.style.left = newCount + "%";
-                if (newCount === 38) cancelAnimationFrame(idAnimatePop);
+                if (newCount >= 38)  cancelAnimationFrame(idAnimatePop);
             }
-            idAnimatePop = requestAnimationFrame(animatePop);
+            if (document.documentElement.clientWidth >= 768) {
+                popupContent.style.left = "0%";
+                idAnimatePop = requestAnimationFrame(animatePop);
+            }
 
 
         };
     };
 
     popForm();
+
+
+
+    //анимация по кнопке на шапке
+
+
+
 });
