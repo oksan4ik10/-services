@@ -43,19 +43,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
     //меню
     const callMenu = () => {
+
+       
         const menu = document.querySelector("menu"),
             btnMenu = document.querySelector(".menu"),
-            closeBtn = document.querySelector(".close-btn"),
-            menuItems = document.querySelectorAll("ul>li>a[href*='#']"),
             imgScroll = document.querySelector(" a[href='#service-block']"); //скролл в шапке
 
         const handlerMenu = () =>  menu.classList.toggle("active-menu");
 
-        btnMenu.addEventListener("click", handlerMenu);
-        closeBtn.addEventListener("click", handlerMenu);
-        menuItems.forEach(el => el.addEventListener("click", handlerMenu));
 
-        //плавный переход
+
+        //плавный переход по клику на меню
         function animateMenu(testItem) {
             let idAnimateMenu, count = 0;
             const testId = testItem.getAttribute("href"),
@@ -71,25 +69,29 @@ window.addEventListener("DOMContentLoaded", () => {
             idAnimateMenu = requestAnimationFrame(startAnimateMenu);
         }
 
-        menuItems.forEach(el => {
-            el.addEventListener("click", event => {
+        document.body.addEventListener("click", event => {
+            const target = event.target;
+            //клик по картинке с меню
+            if (target.closest(".menu")) handlerMenu();
+
+
+            if (target.closest("ul>li>a[href*='#']")) {
+                //анимация по кнопке на шапке
+                menu.classList.remove("active-menu");
                 event.preventDefault();
-                animateMenu(el);
-            });
-        });
-        let imgTranslate = true;
-        imgScroll.addEventListener("click", event => {
-            event.preventDefault();
-            if (imgTranslate) {
-                imgScroll.style.transform = "rotate(180deg)";
-                imgTranslate = false;
-            } else {
-                imgTranslate = true;
-                imgScroll.style.transform = "rotate(0deg)";
+                animateMenu(target);
+            } else if ((target.closest(".close-btn")) || (menu.classList.contains("active-menu") && (!target.closest("menu") && (!target.closest(".menu"))))) {
+
+                //клик мимо меню или по кнопке крестик
+                menu.classList.remove("active-menu");
             }
 
-            animateMenu(imgScroll);
         });
+
+
+
+
+
 
     };
 
@@ -106,9 +108,11 @@ window.addEventListener("DOMContentLoaded", () => {
             popFormAnimate();
         }));
 
-        btnPopClose.forEach(el => el.addEventListener("click", () => {
-            popup.style.display = "none";
-        }));
+        popup.addEventListener("click", even => {
+            if ((!even.target.closest(".popup-content")) || even.target.classList.contains("popup-close")) {
+                popup.style.display = "none";
+            }
+        });
 
 
         const popFormAnimate = () => {
@@ -135,8 +139,45 @@ window.addEventListener("DOMContentLoaded", () => {
     popForm();
 
 
+    //табы дизайн
+    const showTabs = () => {
+        const serviceHeader = document.querySelector(".service-header"),
+            serviceHeaderTab = document.querySelectorAll(".service-header-tab"),
+            serviceTab = document.querySelectorAll(".service-tab");
 
-    //анимация по кнопке на шапке
+
+        function openTab(item) {
+            for (let i = 0; i < serviceHeaderTab.length; i++) {
+                if (item === serviceHeaderTab[i]) {
+                    serviceTab[i].classList.remove("d-none");
+                    serviceHeaderTab[i].classList.add("active");
+                } else {
+                    serviceTab[i].classList.add("d-none");
+                    serviceHeaderTab[i].classList.remove("active");
+                }
+
+
+            }
+        }
+
+        serviceHeader.addEventListener("click", even => {
+            let target = even.target;
+            do {
+                if (target.classList.contains("service-header-tab")) {
+                    openTab(target);
+                    target = "";
+                } else {
+                    target = target.closest(".service-header-tab");
+                }
+            } while (target);
+
+
+        });
+
+    };
+
+    showTabs();
+
 
 
 
