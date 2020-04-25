@@ -185,7 +185,7 @@ window.addEventListener("DOMContentLoaded", () => {
             portfolioDots = document.querySelector(".portfolio-dots");
 
 
-            //создание точек в слайдере
+        //создание точек в слайдере
         for (let i = 0; i < portfolioItem.length; i++) {
             const newLi = document.createElement("li");
             newLi.classList.add("dot");
@@ -266,8 +266,55 @@ window.addEventListener("DOMContentLoaded", () => {
 
     playSlider();
 
+    //наша команда работа с дата-атрибутами (смена фото при наведении)
+    const ourComand = () => {
+        const command = document.getElementById("command");
+
+        command.addEventListener("mouseover", event => {
+            const target = event.target;
+            if (!target.classList.contains("command__photo")) return;
+            target.setAttribute("src", target.dataset.img);
+        });
+        command.addEventListener("mouseout", event => {
+            const target = event.target;
+            if (!target.classList.contains("command__photo")) return;
+            let imgSrc = target.getAttribute("src");
+
+            imgSrc = imgSrc.replace("a.jpg", ".jpg");
+
+            target.setAttribute("src", imgSrc);
+        });
+
+    };
+    ourComand();
 
 
 
+
+    //разрешить ввод только цифр
+    const numeralsForm = () => {
+        const calcForm = document.getElementById("calc");
+
+        calcForm.addEventListener("input", event => {
+            const target = event.target;
+            let str = ""; //вспомогательная строка
+
+            if (!target.type === "number") return;
+            const symbol = event.data; //каждый символ, который вводит пользователь
+            if (event.data) {
+                str += event.data;
+                if (/\D/.test(symbol)) {
+                    str = str.slice(0, str.length - 1);
+                    target.value = str;
+                }
+            }
+            str = target.value;
+
+
+        });
+
+    };
+
+    numeralsForm();
 
 });
