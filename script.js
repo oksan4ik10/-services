@@ -318,3 +318,56 @@ window.addEventListener("DOMContentLoaded", () => {
     numeralsForm();
 
 });
+
+//калькулятор для формы
+const calcForm = (price = 100) => {
+    const calcBlock = document.querySelector(".calc-block"),
+        calcSquare = document.querySelector(".calc-square"),
+        calcCount = document.querySelector(".calc-count"),
+        calcItem = document.querySelector(".calc-type"),
+        totalId = document.getElementById("total"),
+        calcDay = document.querySelector(".calc-day");
+
+
+
+    calcBlock.addEventListener("change", () => {
+
+        let total = 0, count, calcCountValue, calcDayValue;
+        const calcTotal = () => {
+            if (!(calcSquare.value) || !(calcItem.value)) return;
+            !(calcCount.value) ? calcCountValue = 1 : calcCountValue = calcCount.value;
+            count = calcSquare.value * price * calcItem.value;
+
+            count = (count / 10) * calcCountValue + (count - count / 10);
+
+            !(calcDay.value) ? calcDayValue = 10 : calcDayValue = calcDay.value;
+            if (calcDayValue < 5) count *= 2;
+            else if (calcDayValue < 10) count *= 1.5;
+
+            total = count;
+
+
+
+
+        };
+
+        calcTotal();
+
+        totalId.textContent = total;
+        // console.log(target);
+        // console.log(target.selectedIndex);
+
+
+
+
+
+
+
+
+
+
+    });
+
+};
+
+calcForm(100);
