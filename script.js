@@ -332,7 +332,7 @@ const calcForm = (price = 100) => {
 
     calcBlock.addEventListener("change", () => {
 
-        let total = 0, count, calcCountValue, calcDayValue;
+        let total = 0, count, calcCountValue, calcDayValue, idAnimate, countAnimate = 0;
         const calcTotal = () => {
             if (!(calcSquare.value) || !(calcItem.value)) return;
             !(calcCount.value) ? calcCountValue = 1 : calcCountValue = calcCount.value;
@@ -346,6 +346,8 @@ const calcForm = (price = 100) => {
 
             total = count;
 
+            idAnimate = setInterval(showAnimate, 50);
+
 
 
 
@@ -353,9 +355,20 @@ const calcForm = (price = 100) => {
 
         calcTotal();
 
-        totalId.textContent = total;
-        // console.log(target);
-        // console.log(target.selectedIndex);
+
+        //анимация для вывода стоимости
+        function showAnimate() {
+            totalId.textContent = countAnimate;
+            if (countAnimate >= total) {
+                countAnimate = 0;
+                clearInterval(idAnimate);
+            }
+            countAnimate++;
+
+
+        }
+
+    
 
 
 
