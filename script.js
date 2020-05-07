@@ -399,15 +399,9 @@ window.addEventListener("DOMContentLoaded", () => {
                 });
 
 
-                postData(body,
-                    () => {
-                        statusMessage.textContent = successMessage;
-                    }, error => {
-                        statusMessage.textContent = errorMessage;
-                        console.error(error);
-
-
-                    });
+                postData(body)
+                    .then()
+                    .catch(res => console.log(res));
                 //очищене полей формы после отправки
                 formData.forEach((val, key) => {
                     const input = forma.querySelector(`[name=${key}]`);
@@ -428,7 +422,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
-        const postData = (body, outputData, errorData) => {
+        const postData = body => new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
             request.addEventListener("readystatechange", () => {
 
@@ -437,10 +431,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 }
 
                 if (request.status === 200) {
-                    outputData();
+                    statusMessage.textContent = successMessage;
+                    resolve(statusMessage);
 
                 } else {
-                    errorData(request.status);
+                    reject(request.status);
 
                 }
             });
@@ -449,13 +444,14 @@ window.addEventListener("DOMContentLoaded", () => {
             request.setRequestHeader("Content-Type", "application/json");
             request.send(JSON.stringify(body));
 
-        };
+        });
+
     };
     //запрет ввод данных
     const nameWords = document.querySelectorAll("input[name=user_name]"),
         nameMessage = document.querySelectorAll("input[name=user_message]"),
         nameSum = document.querySelectorAll("input[name='user_phone']");
-        
+
 
     nameWords.forEach(el => {
         el.addEventListener("input", e => {
