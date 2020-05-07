@@ -402,6 +402,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 postData(body)
                     .then()
                     .catch(res => console.log(res));
+
+
                 //очищене полей формы после отправки
                 formData.forEach((val, key) => {
                     const input = forma.querySelector(`[name=${key}]`);
@@ -435,6 +437,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     resolve(statusMessage);
 
                 } else {
+                    statusMessage.textContent = errorMessage;
                     reject(request.status);
 
                 }
