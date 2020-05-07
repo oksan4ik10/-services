@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Day18</title>
+</head>
+<body>
+    
+
+
+    <script>
+        const dayName= (day) =>{
+            let c=+day%10;
+            if ((day>20||day<10)&&c==1) {strClock= "день"}
+            else if ((day>20||day<10)&&(c==2||c==3||c==4))strClock= "дня"
+            else strClock="дней";
+            
+            return day + " "+strClock;
+        }
+        const TimesOfDay=(time) => {
+            let timeDay, dayWeek, timeNow, newYear,
+            timeHours=time.getHours();
+
+            if ((timeHours>5)&&(timeHours<11)) timeDay = "Доброе утро"
+            else if ((timeHours>=11) && (timeHours<17)) timeDay="Добрый день"
+            else if ((timeHours>=17)&&(timeHours<23)) timeDay="Добрый вечер"
+            else timeDay="Доброй ночи"
+
+            const dayWeekNow=time.toLocaleString("ru", {weekday:"long"});
+            dayWeek=dayWeekNow.toUpperCase()[0]+dayWeekNow.slice(1);
+
+            timeNow=time.toLocaleTimeString("en");
+
+            const happyNewYear = new Date("1 1 2021");
+            newYear=dayName(Math.ceil((happyNewYear-time)/1000/60/60/24));
+            
+
+            return {timeDay, dayWeek, timeNow, newYear}
+        }
+
+        
+        let date=TimesOfDay(new Date());
+
+        
+
+        document.body.innerHTML=`${date.timeDay}<br>
+                                Сегодня: ${date.dayWeek}<br>
+                                Текущее время:${date.timeNow}<br>
+                                До нового года осталось ${date.newYear}`
+
+
+        
+    
+        
+    
+    </script>
+
+</body>
+</html>
