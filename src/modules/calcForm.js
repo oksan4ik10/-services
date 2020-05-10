@@ -16,6 +16,7 @@ const calcForm = (price = 100) => {
         const calcTotal = () => {          
             
             if (!(calcSquare.value) || !(calcItem.value)) {
+                totalId.textContent = "0";
                 return;
             }
             !(calcCount.value) ? calcCountValue = 1 : calcCountValue = calcCount.value;
@@ -28,9 +29,9 @@ const calcForm = (price = 100) => {
             if (calcDayValue < 5) count *= 2;
             else if (calcDayValue < 10) count *= 1.5;
 
-            total = count;
+            totalId.textContent = count;
 
-            idAnimate = requestAnimationFrame(showAnimate);
+            // idAnimate = requestAnimationFrame(showAnimate);
         };
 
         calcTotal();

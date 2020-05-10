@@ -15,15 +15,22 @@ const sendForm = () => {
     const formRead = forma => {
         forma.addEventListener("submit", event => {
             event.preventDefault();
-            forma.appendChild(statusMessage);
+            forma.appendChild(statusMessage);            
+ 
             statusMessage.textContent = loadMessage;
             const body = {};
             const formData = new FormData(forma); //получаем данные с формы
             formData.forEach((val, key) => {
                 body[key] = val;
-
             });
+            
+            
+            //проверка на телефон
+            if (!/\+|\d{8,18}/g.test(body["user_phone"])){
+                statusMessage.textContent = "Телефон введен неверно"
+                return;
 
+            }
 
             postData(body)
                 .then(response => {
@@ -72,7 +79,7 @@ const sendForm = () => {
     //запрет ввод данных
     const nameWords = document.querySelectorAll("input[name=user_name]"),
         nameMessage = document.querySelectorAll("input[name=user_message]"),
-        nameSum = document.querySelectorAll("input[name='user_phone']");
+        namePhone = document.querySelectorAll("input[name='user_phone']");
 
 
     nameWords.forEach(el => {
@@ -82,11 +89,11 @@ const sendForm = () => {
     });
     nameMessage.forEach(el => {
         el.addEventListener("input", e => {
-            e.target.value = e.target.value.replace(/([^А-Я\s])/gi, "");
+            e.target.value = e.target.value.replace(/([^А-Я\s.,?!-()'":;])/gi, "");
         });
     });
 
-    nameSum.forEach(el => {
+    namePhone.forEach(el => {
         el.addEventListener("input", e => {
             e.target.value = e.target.value.replace(/([^\d\+])/gi, "");
         });
